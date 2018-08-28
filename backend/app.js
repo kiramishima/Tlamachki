@@ -1,4 +1,4 @@
-var cv = require('opencv');
+/*var cv = require('opencv');
 var path = require('path');
 
 if (cv.ImageSimilarity === undefined) {
@@ -21,4 +21,4 @@ cv.readImage(path.join(__dirname, "./files/mona_lisa2.jpg"), function(err, car1)
 
   });
 
-});
+});*/

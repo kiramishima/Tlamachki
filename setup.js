@@ -4,26 +4,33 @@ module.exports = function () {
     global.locationDialog = require('botbuilder-location');
     global.RetrieveUserProfile = require('botbuilder-facebookextension').RetrieveUserProfile;
 
+    // Storage
+    var inMemoryStorage = new builder.MemoryBotStorage();
     // Create chat connector for communicating with the Bot Framework Service
     var connector = new builder.ChatConnector({
         appId: process.env.MICROSOFT_APP_ID,
         appPassword: process.env.MICROSOFT_APP_PASSWORD
     });
 
-    global.bot = new builder.UniversalBot(connector);
+    global.bot = new builder.UniversalBot(connector).set('storage', inMemoryStorage);
+    // Do not persist userData
+    global.bot.set(`persistUserData`, true);
+
+    // Do not persist conversationData
+    global.bot.set(`persistConversationData`, true);
     // Create Bot Instance
     /*global.bot = new builder.UniversalBot(connector, session => {
         session.sendTyping();
         session.replaceDialog('/start');
     });*/
 
-    global.bot.library(locationDialog.createLibrary(process.env.BING_MAPS_API_KEY));
+    //global.bot.library(locationDialog.createLibrary(process.env.BING_MAPS_API_KEY));
 
-    global.bot.use(
+    /*global.bot.use(
         RetrieveUserProfile({
             accessToken: process.env.FacebookAccessToken,
         })
-    );
+    );*/
 
     // Add recognizer
     //global.bot.recognizer(new facebook.CallbackRecognizer());

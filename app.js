@@ -5,31 +5,33 @@ require('./dialogs/findByType_dialog')();
 require('./dialogs/findByImage_dialog')();
 require('./dialogs/nearByMe_dialog')();
 
-bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^bye/i });
-bot.beginDialogAction('start', '/start', { matches: /^home/i });
-bot.beginDialogAction('help', '/help', { matches: /^menu/i });
+global.bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^bye/i });
+global.bot.beginDialogAction('start', '/start', { matches: /^home/i });
+global.bot.beginDialogAction('help', '/help', { matches: /^menu/i });
 // bot.beginDialogAction('profile', '/profile', { matches: /^profile/i });
 
-bot.dialog('/', [
+global.bot.dialog('/', [
     (session) => {
-        session.replaceDialog('/start');
+        console.log("ss");
+        session.send("Good morning.");
+        // session.replaceDialog('/start');
     }
 ]);
 
 bot.dialog('/start', [
     (session) => {
-        session.send(`Hola ${session.userData.first_name}!`);
+        // session.send(`Hola ${session.userData.first_name}!`);
         session.sendTyping();
         session.send("Mi mision es ayudarlo a conectarlo con el artesano de la pieza que desea adquirir");
         /*if (!session.userData.first_name) {
             session.replaceDialog('/profile');
-        } else {*/
-        session.replaceDialog('/help');
-        //}
+        } else {
+            session.replaceDialog('/help');
+        }*/
     }
 ]);
 
-/*bot.dialog('/profile', [
+bot.dialog('/profile', [
     (session) => {
         session.send("Antes de comenzar, necesito algunos datos muy importantes para brindarte un mejor servicio, asi que comencemos :-)");
         builder.Prompts.text(session, 'Hola! Cual es tu correo electronico?');
@@ -41,10 +43,32 @@ bot.dialog('/start', [
             next();
         }
     },
-    function (session){
+    (session) => {
+        builder.Prompts.attachment(session, 'Esperando imagen...');
+        /*setTimeout(() => {
+            next();
+        }, 15000);*/
+    },
+    (session, args, next) => {
+        // recibimos la imagen
+        var msg = session.message;
+        console.log({msg})
+        if (msg.attachments && msg.attachments.length > 0) {
+            var attachment = msg.attachments[0];
+            /*
+            var request = require('request-promise').defaults({ encoding: null });
+            var fileDownload = request(attachment.contentUrl);
+            fileDownload.pipe(fs.createWriteStream(path.join(__dirname, '../uploads/', attachment.name)))
+            .on('close', function () {
+                next({filename: attachment.name})
+            });*/
+            next({filename: attachment.name})
+        }
+    }
+    /*function (session){
         session.send("Send me your current location.");
     },
-    /*function (session){
+    function (session){
         var data = { method: "sendMessage", parameters: { text: "<b>Save time by sending us your current location.</b>", parse_mode: "HTML", reply_markup: { keyboard: [ [ { text: "Share location", request_location: true } ] ] } } };
         const message = new builder.Message(session);
         message.sourceEvent({
@@ -73,5 +97,5 @@ bot.dialog('/start', [
         session.userData.phone = results.response;
         session.endDialog();
         session.beginDialog('/menu');
-    }
-]);*/
+    }*/
+]);

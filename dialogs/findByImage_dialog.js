@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 var request = require('request-promise').defaults({ encoding: null });
 var fs = require('fs');
 var path = require('path');
-var vision = require('../backend');
+// var vision = require('../backend');
 
 module.exports = function() {
     bot.dialog('/findByImage', [
@@ -44,7 +44,7 @@ module.exports = function() {
         },
         (session, args) => {
             session.send("Espere un momento por favor");
-            vision(path.join(__dirname, '../files/mona_lisa3.jpg')).then(res => {
+            /*vision(path.join(__dirname, '../files/mona_lisa3.jpg')).then(res => {
                 console.log({res});
                 // Retornamos el resultado
                 var reply = new builder.Message(session).attachmentLayout(builder.AttachmentLayout.carousel);
@@ -60,7 +60,7 @@ module.exports = function() {
                 session.send(reply);
                 session.endConversation();
                 // session.endDialog();
-            });
+            });*/
         }
     ]);
 }
