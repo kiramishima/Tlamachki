@@ -12,9 +12,7 @@ global.bot.beginDialogAction('help', '/help', { matches: /^menu/i });
 
 global.bot.dialog('/', [
     (session) => {
-        console.log("ss");
-        session.send("Good morning.");
-        // session.replaceDialog('/start');
+        session.replaceDialog('/start');
     }
 ]);
 
@@ -23,11 +21,11 @@ bot.dialog('/start', [
         // session.send(`Hola ${session.userData.first_name}!`);
         session.sendTyping();
         session.send("Mi mision es ayudarlo a conectarlo con el artesano de la pieza que desea adquirir");
-        /*if (!session.userData.first_name) {
+        if (!session.userData.first_name) {
             session.replaceDialog('/profile');
         } else {
             session.replaceDialog('/help');
-        }*/
+        }
     }
 ]);
 
@@ -44,10 +42,15 @@ bot.dialog('/profile', [
         }
     },
     (session) => {
+        session.endDialog();
+        session.beginDialog('/help');
+    }
+    /*,
+    (session) => {
         builder.Prompts.attachment(session, 'Esperando imagen...');
         /*setTimeout(() => {
             next();
-        }, 15000);*/
+        }, 15000);
     },
     (session, args, next) => {
         // recibimos la imagen
@@ -61,10 +64,10 @@ bot.dialog('/profile', [
             fileDownload.pipe(fs.createWriteStream(path.join(__dirname, '../uploads/', attachment.name)))
             .on('close', function () {
                 next({filename: attachment.name})
-            });*/
+            });
             next({filename: attachment.name})
         }
-    }
+    }*/
     /*function (session){
         session.send("Send me your current location.");
     },

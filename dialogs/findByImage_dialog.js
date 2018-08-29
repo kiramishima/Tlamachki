@@ -34,16 +34,36 @@ module.exports = function() {
             var msg = session.message;
             if (msg.attachments && msg.attachments.length > 0) {
                 var attachment = msg.attachments[0];
-                /*var fileDownload = request(attachment.contentUrl);
+                var fileDownload = request(attachment.contentUrl);
                 fileDownload.pipe(fs.createWriteStream(path.join(__dirname, '../uploads/', attachment.name)))
                 .on('close', function () {
                     next({filename: attachment.name})
-                });*/
-                next({filename: attachment.name})
+                });
+                // next({filename: attachment.name})
             }
         },
-        (session, args) => {
+        (session, args, next) => {
             session.send("Espere un momento por favor");
+            const options = {
+                method: 'POST',
+                uri: 'http://ptsv2.com/t/e0w93-1535522637/post',
+                formData: {
+                  image:{
+                    value: fs.createReadStream(path.join(__dirname, '../uploads/', args.filename)),
+                    options: {
+                        filename: args.filename,
+                        contentType: 'image/jpg'
+                    }
+                  }
+                }
+            };
+            request.then(function (parsedBody) {
+                // POST succeeded...
+                next({filename: attachment.name})
+            })
+            .catch(function (err) {
+                next({err})
+            });
             /*vision(path.join(__dirname, '../files/mona_lisa3.jpg')).then(res => {
                 console.log({res});
                 // Retornamos el resultado
@@ -61,6 +81,9 @@ module.exports = function() {
                 session.endConversation();
                 // session.endDialog();
             });*/
+        },
+        (session, args) => {
+            session.send("TODO Resultados");
         }
     ]);
 }

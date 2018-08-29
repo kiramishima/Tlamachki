@@ -9,15 +9,15 @@ module.exports = function () {
                 var selection = results.response.entity;
                 // route to corresponding dialogs
                 switch (selection) {
-                    case "Obtener listado de artesanos cercanos a mi":
+                    /*case "Obtener listado de artesanos cercanos a mi":
                         session.replaceDialog('/nearByMe');
-                        break;
+                        break;*/
                     case "Buscar informacion de la pieza":
                         session.replaceDialog('/findByImage');
                         break;
-                    case "Buscar informacion por tipo":
+                    /*case "Buscar informacion por tipo":
                         session.replaceDialog('/findByType');
-                        break;
+                        break;*/
                     default:
                         session.reset('/');
                         break;
